@@ -1,7 +1,44 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-const Formulario = () => {
+const Formulario = ({ crearCita }) => {
+   const initialCitas = {
+      mascota: "",
+      propietario: "",
+      email: "",
+      alta: "",
+      sintomas: "",
+   };
+
+   const [cita, setCita] = useState(initialCitas);
+
+   const handleInputChange = (e) => {
+      setCita({ ...cita, [e.target.name]: e.target.value });
+   };
+
+   const { mascota, propietario, email, alta, sintomas } = cita;
+
+   const handleSubmit = (e) => {
+      e.preventDefault();
+
+      if ([mascota, propietario, email, alta, sintomas].includes("")) {
+         toast.error("llene todos los campos");
+         return;
+      }
+
+      if (mascota.trim().length <= 2 || propietario.trim().length <= 2) {
+         toast.error(
+            `nombre de mascota o propietario muy cortos, mínimo 3 letras`
+         );
+         return;
+      }
+
+      toast.success(`Paciente: ${mascota.toUpperCase()} creado exitosamente`);
+      crearCita(cita);
+      setCita(initialCitas);
+   };
+
    return (
       <div className='md:w-1/2 lg:w-2/5'>
          <h2 className='font-black text-3xl text-center'>
@@ -13,19 +50,22 @@ const Formulario = () => {
          </p>
          <form
             className='bg-white shadow-md rounded-lg py-10 px-5 mx-5 mt-5 md:mt-10 mb-10'
-            action=''>
+            action=''
+            onSubmit={handleSubmit}>
             <div className='mb-5'>
                <label
                   className='block text-gray-700 uppercase font-bold'
                   htmlFor='mascota'>
-                  Nombre Mascota
+                  Nombre Mascota:
                </label>
                <input
                   className='border-2 w-full p-2 mt-2 placeholder-purple-300 rounded-md'
                   id='mascota'
-                  name='nombre_mascota'
+                  name='mascota'
                   placeholder='Nombre de la mascota'
                   type='text'
+                  value={mascota}
+                  onChange={handleInputChange}
                />
             </div>
 
@@ -38,9 +78,11 @@ const Formulario = () => {
                <input
                   className='border-2 w-full p-2 mt-2 placeholder-purple-300 rounded-md'
                   id='propietario'
-                  name='nombre_propietario'
+                  name='propietario'
                   placeholder='Nombre del propietario'
                   type='text'
+                  value={propietario}
+                  onChange={handleInputChange}
                />
             </div>
 
@@ -56,6 +98,8 @@ const Formulario = () => {
                   name='email'
                   placeholder='email contacto propietario'
                   type='email'
+                  value={email}
+                  onChange={handleInputChange}
                />
             </div>
 
@@ -68,8 +112,10 @@ const Formulario = () => {
                <input
                   className='border-2 w-full p-2 mt-2 placeholder-purple-300 rounded-md'
                   id='alta'
-                  name='nombre_propietario'
+                  name='alta'
                   type='date'
+                  value={alta}
+                  onChange={handleInputChange}
                />
             </div>
 
@@ -81,8 +127,10 @@ const Formulario = () => {
                </label>
                <textarea
                   className='border-2 w-full p-2 mt-2 placeholder-purple-300 rounded-md'
-                  name=''
+                  name='sintomas'
                   id='sintomas'
+                  value={sintomas}
+                  onChange={handleInputChange}
                   cols='30'
                   placeholder='Describe los sintomas del paciente ...'
                   rows='10'></textarea>
