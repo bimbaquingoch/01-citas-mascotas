@@ -3,6 +3,12 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const Formulario = ({ crearCita }) => {
+   const generarId = () => {
+      const fecha = Date.now().toString(36);
+      const hash = Math.random().toString(36).substr(2);
+      return fecha + hash;
+   };
+
    const initialCitas = {
       mascota: "",
       propietario: "",
@@ -14,7 +20,7 @@ const Formulario = ({ crearCita }) => {
    const [cita, setCita] = useState(initialCitas);
 
    const handleInputChange = (e) => {
-      setCita({ ...cita, [e.target.name]: e.target.value });
+      setCita({ ...cita, [e.target.name]: e.target.value, id: generarId() });
    };
 
    const { mascota, propietario, email, alta, sintomas } = cita;
@@ -35,6 +41,7 @@ const Formulario = ({ crearCita }) => {
       }
 
       toast.success(`Paciente: ${mascota.toUpperCase()} creado exitosamente`);
+
       crearCita(cita);
       setCita(initialCitas);
    };

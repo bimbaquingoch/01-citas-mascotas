@@ -16,7 +16,7 @@ const Listadopacientes = ({ citas }) => {
             </p>
             <div className='m-0 p-0 md:h-screen overflow-y-scroll'>
                {citas.map((datoCita) => {
-                  return <Pacientes key={datoCita.alta} {...datoCita} />;
+                  return <Pacientes key={datoCita.id} {...datoCita} />;
                })}
             </div>
          </div>
