@@ -1,29 +1,19 @@
-import PropTypes from "prop-types";
+import PropTypes, { object } from "prop-types";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const Formulario = ({ crearCita }) => {
+const Formulario = ({ setPacientes, pacientes }) => {
+   const [mascota, setMascota] = useState("");
+   const [propietario, setPropietario] = useState("");
+   const [email, setEmail] = useState("");
+   const [alta, setAlta] = useState("");
+   const [sintomas, setSintomas] = useState("");
+
    const generarId = () => {
       const fecha = Date.now().toString(36);
       const hash = Math.random().toString(36).substr(2);
       return fecha + hash;
    };
-
-   const initialCitas = {
-      mascota: "",
-      propietario: "",
-      email: "",
-      alta: "",
-      sintomas: "",
-   };
-
-   const [cita, setCita] = useState(initialCitas);
-
-   const handleInputChange = (e) => {
-      setCita({ ...cita, [e.target.name]: e.target.value, id: generarId() });
-   };
-
-   const { mascota, propietario, email, alta, sintomas } = cita;
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -42,8 +32,23 @@ const Formulario = ({ crearCita }) => {
 
       toast.success(`Paciente: ${mascota.toUpperCase()} creado exitosamente`);
 
-      crearCita(cita);
-      setCita(initialCitas);
+      // objeto de paciente
+      const objetoPaciente = {
+         mascota,
+         propietario,
+         email,
+         alta,
+         sintomas,
+      };
+
+      setPacientes([...pacientes, objetoPaciente]);
+
+      // reiniciar el form
+      setMascota("");
+      setPropietario("");
+      setEmail("");
+      setAlta("");
+      setSintomas("");
    };
 
    return (
@@ -72,7 +77,7 @@ const Formulario = ({ crearCita }) => {
                   placeholder='Nombre de la mascota'
                   type='text'
                   value={mascota}
-                  onChange={handleInputChange}
+                  onChange={(e) => setMascota(e.target.value)}
                />
             </div>
 
@@ -89,7 +94,7 @@ const Formulario = ({ crearCita }) => {
                   placeholder='Nombre del propietario'
                   type='text'
                   value={propietario}
-                  onChange={handleInputChange}
+                  onChange={(e) => setPropietario(e.target.value)}
                />
             </div>
 
@@ -106,7 +111,7 @@ const Formulario = ({ crearCita }) => {
                   placeholder='email contacto propietario'
                   type='email'
                   value={email}
-                  onChange={handleInputChange}
+                  onChange={(e) => setEmail(e.target.value)}
                />
             </div>
 
@@ -122,7 +127,7 @@ const Formulario = ({ crearCita }) => {
                   name='alta'
                   type='date'
                   value={alta}
-                  onChange={handleInputChange}
+                  onChange={(e) => setAlta(e.target.value)}
                />
             </div>
 
@@ -137,16 +142,16 @@ const Formulario = ({ crearCita }) => {
                   name='sintomas'
                   id='sintomas'
                   value={sintomas}
-                  onChange={handleInputChange}
+                  onChange={(e) => setSintomas(e.target.value)}
                   cols='30'
                   placeholder='Describe los sintomas del paciente ...'
-                  rows='10'></textarea>
+                  rows='5'></textarea>
             </div>
 
             <input
                className='cursor-pointer rounded-md shadow-md bg-indigo-500 w-full p-3 text-white uppercase font-bold hover:bg-indigo-800 transition-all'
                type='submit'
-               value='Agregar paciente'
+               // value={paciete.id ? "Editar Paciente" : "Agregar paciente"}
             />
          </form>
       </div>
