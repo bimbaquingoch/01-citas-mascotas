@@ -14,7 +14,7 @@ function App() {
          <div className='mt-12 md:flex'>
             <ToastContainer />
             <Formulario pacientes={pacientes} setPacientes={setPacientes} />
-            <Listadopacientes />
+            <Listadopacientes pacientes={pacientes} />
          </div>
       </div>
    );
