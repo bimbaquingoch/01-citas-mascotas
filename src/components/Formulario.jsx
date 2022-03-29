@@ -2,12 +2,23 @@ import PropTypes, { object } from "prop-types";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const Formulario = ({ setPacientes, pacientes }) => {
+const Formulario = ({ setPacientes, pacientes, paciente, setPaciente }) => {
    const [mascota, setMascota] = useState("");
    const [propietario, setPropietario] = useState("");
    const [email, setEmail] = useState("");
    const [alta, setAlta] = useState("");
    const [sintomas, setSintomas] = useState("");
+
+   useEffect(() => {
+      if (Object.keys(paciente).length > 0);
+      {
+         setMascota(paciente.mascota);
+         setPropietario(paciente.propietario);
+         setEmail(paciente.email);
+         setAlta(paciente.alta);
+         setSintomas(paciente.sintomas);
+      }
+   }, [paciente]);
 
    const generarId = () => {
       const fecha = Date.now().toString(36);
@@ -18,7 +29,10 @@ const Formulario = ({ setPacientes, pacientes }) => {
    const handleSubmit = (e) => {
       e.preventDefault();
 
-      if ([mascota, propietario, email, alta, sintomas].includes("")) {
+      if (
+         [mascota, propietario, email, alta, sintomas].includes("") ||
+         [mascota, propietario, email, alta, sintomas].includes()
+      ) {
          toast.error("llene todos los campos");
          return;
       }
@@ -41,7 +55,20 @@ const Formulario = ({ setPacientes, pacientes }) => {
          sintomas,
       };
 
-      setPacientes([...pacientes, objetoPaciente]);
+      if (paciente.id) {
+         // ("editando");
+         objetoPaciente.id = paciente.id;
+         const actualizado = pacientes.map((pacienteState) =>
+            pacienteState.id === paciente.id ? objetoPaciente : pacienteState
+         );
+
+         setPacientes(actualizado);
+         setPaciente({});
+      } else {
+         // ("nuevo registro");
+         objetoPaciente.id = generarId();
+         setPacientes([...pacientes, objetoPaciente]);
+      }
 
       // reiniciar el form
       setMascota("");
@@ -151,7 +178,7 @@ const Formulario = ({ setPacientes, pacientes }) => {
             <input
                className='cursor-pointer rounded-md shadow-md bg-indigo-500 w-full p-3 text-white uppercase font-bold hover:bg-indigo-800 transition-all'
                type='submit'
-               // value={paciete.id ? "Editar Paciente" : "Agregar paciente"}
+               value={paciente.id ? "Editar Paciente" : "Agregar paciente"}
             />
          </form>
       </div>
