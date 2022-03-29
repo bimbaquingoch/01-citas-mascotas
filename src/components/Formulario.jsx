@@ -1,4 +1,4 @@
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -185,6 +185,11 @@ const Formulario = ({ setPacientes, pacientes, paciente, setPaciente }) => {
    );
 };
 
-Formulario.propTypes = {};
+Formulario.propTypes = {
+   setPacientes: PropTypes.func.isRequired,
+   setPaciente: PropTypes.func.isRequired,
+   paciente: PropTypes.object.isRequired,
+   pacientes: PropTypes.array.isRequired,
+};
 
 export default Formulario;

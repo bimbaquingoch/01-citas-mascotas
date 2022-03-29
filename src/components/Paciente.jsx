@@ -47,6 +47,10 @@ const Paciente = ({ paciente, setPaciente, eliminarPaciente }) => {
    );
 };
 
-Paciente.propTypes = {};
+Paciente.propTypes = {
+   paciente: PropTypes.object.isRequired,
+   setPaciente: PropTypes.func.isRequired,
+   eliminarPaciente: PropTypes.func.isRequired,
+};
 
 export default Paciente;
