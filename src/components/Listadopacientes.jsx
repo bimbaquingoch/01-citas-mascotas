@@ -37,7 +37,7 @@ const Listadopacientes = ({ pacientes, setPaciente, eliminarPaciente }) => {
                      key={paciente.id}
                      paciente={paciente}
                      setPaciente={setPaciente}
-                     eliminarPaciente={eliminarPacientew}
+                     eliminarPaciente={eliminarPaciente}
                   />
                ))}
             </div>
